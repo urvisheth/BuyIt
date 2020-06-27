@@ -14,7 +14,7 @@
     -webkit-box-orient: vertical;
 }
 
-.fa {
+.fa-shopping-cart {
     padding: 0.5rem;
     font-size: 1.2rem;
     width: 2rem;
@@ -24,7 +24,7 @@
     border-radius: 50%;
 }
 
-.fa:after {
+.fa-shopping-cart:after {
     content: attr(value);
     font-size: 12px;
     background: red;
@@ -36,11 +36,29 @@
     opacity: 0.9;
 }
 
-#prodAlert {
+#prodAlert,
+.errorQunat {
     overflow-y: hidden;
     max-height: 4rem;
     transition-property: all;
     transition-duration: 1s;
+}
+
+.table td,
+.table th {
+    border: 0px solid #ffffff !important;
+    line-height: 2.2rem;
+}
+
+#searchUL {
+    display: block;
+    position: absolute;
+    top: 3rem;
+    width: 13.4%;
+}
+
+.card-border {
+    border: 3px solid red !important;
 }
 
 

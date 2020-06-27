@@ -23,7 +23,7 @@ const data = [{
         "subcategory": "Shoes",
         "price": 450,
         "currency": "USD",
-        "quantity": 17,
+        "quantity": 3,
         "company": "Adidas",
         "comapny_logo": "./logo/adidas.png",
         "product_img": "./images/2.jpg",
