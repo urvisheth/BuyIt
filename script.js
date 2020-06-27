@@ -80,18 +80,22 @@ function loadCart() {
     if (cartCountEle.attributes.value.value > 0) {
         document.getElementById('placeOrder').removeAttribute("disabled");
         htmlString += "<table class=\"table\" style='margin-bottom:0px;'>";
-        htmlString += "<tr><th></th><th class='cart-title'>Product Name</th><th>Quantity</th><th></th>";
+        htmlString += "<tr><th></th><th>Product Name</th><th>Quantity</th><th>Price</th><th></th>";
         var i = 1;
+        var cartTotal = 0;
         for (var key in cart) {
             var prodDeatils = data.find(o => o.id === key);
             htmlString += "<tr row-identifier='" + key + "'>";
             htmlString += "<td>" + i + "</td>";
             htmlString += "<td class='cart-title'>" + prodDeatils.name + "</td>";
+            htmlString += "<td class='price' price-per-ele='" + prodDeatils.price + "'><b>$" + parseInt(prodDeatils.price) * cart[key] + "</b></td>";
             htmlString += "<td><input type=\"number\" onclick=\"changeQunatity('" + key + "',this.value," + prodDeatils.quantity + ")\" onchange=\"changeQunatity('" + key + "',this.value," + prodDeatils.quantity + ")\" value = \"" + cart[key] + "\" style=\"width:3rem;\" min='1' max='" + prodDeatils.quantity + "'></td>";
             htmlString += "<td><a href=\"javascript:void(0);\" onclick=\"deleteFromCart('" + key + "')\" class=\"btn btn-primary\"><i class='fa fa-trash text-white'></i></a> </td>";
             htmlString += "</tr>";
             i += 1
+            cartTotal += parseInt(prodDeatils.price) * cart[key];
         }
+        htmlString += "<tr><td colspan='5' class='cartTotal'> <b>Total Sum : $" + cartTotal + "</b></td></tr>";
         htmlString += "</table>";
 
     } else {
@@ -115,10 +119,22 @@ function deleteFromCart(index) {
 
 function changeQunatity(index, value, max) {
     var curEle = document.querySelectorAll('[row-identifier=\'' + index + '\']')[0];
+    var oldQunat = cart[index];
     cart[index] = parseInt(value);
     curEle.querySelector('input').setAttribute('value', value);
+
+    var priceChange = curEle.getElementsByClassName('price')[0];
+    var singlePrice = parseInt(priceChange.attributes['price-per-ele'].value);
+    priceChange.innerHTML = "<b>$" + singlePrice * value + "</b>";
+
+    var currentTotalEle = curEle.parentNode.getElementsByClassName('cartTotal')[0];
+    var cntTotal = parseInt(currentTotalEle.innerText.split("$").slice(-1).pop())
+    var newPrice = cntTotal - (oldQunat * singlePrice) + (singlePrice * parseInt(value));
+    currentTotalEle.innerHTML = "<b>Total Sum : $" + newPrice + "</b>";
+
+
     if (value >= max && !document.getElementsByClassName('errorQunat').length) {
-        document.querySelectorAll('[row-identifier=\'' + index + '\']')[0].parentElement.innerHTML += "<tr><td colspan=\"4\"><p class='text-danger errorQunat fade'> No more quantity is available than : " + value + "</p></td></tr>";
+        document.querySelectorAll('[row-identifier=\'' + index + '\']')[0].parentElement.innerHTML += "<tr><td colspan=\"5\"><p class='text-danger errorQunat fade'> No more quantity is available than : " + value + "</p></td></tr>";
         generateEffect(document.getElementsByClassName('errorQunat')[0], document.getElementsByClassName('errorQunat')[0].parentElement.parentElement, 2000);
     } else {
         if (document.getElementsByClassName('errorQunat').length) {
