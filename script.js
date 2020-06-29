@@ -15,11 +15,13 @@ function loadProducts() {
     var rowLength = data.length > 4 ? Math.ceil(data.length / 4) : data.length; //assuming max 4 elements in a row
     var productData = document.getElementById('productData');
     var htmlString = "<div class='row p-5'>";
-    var colSmValue = Math.floor(12 / rowLength);
+    var colSmValue = data.length < 4 ? Math.floor(12 / rowLength) : 3;
     for (var key in data) {
-        if (key % rowLength == 0 && rowLength > 1) {
+        if (key % 4 == 0 && key > 0) {
             htmlString += "</div><div class='row p-5'>";
+            colSmValue = (data.length - (parseInt(key))) > 4 ? colSmValue : Math.ceil(12 / (data.length - (parseInt(key))));
         }
+
         htmlString += "<div class='col-sm-" + colSmValue + "'>"; //total 12 col in a row and for 4 elements in a row leaves 12/4 = 3 col for each object
         htmlString += "<div class='card' style='width: 18rem;' id='" + data[key].id + "'>";
         htmlString += "<img src=" + data[key].product_img + " class='card-img-top' alt=''>";
